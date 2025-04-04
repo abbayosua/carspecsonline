@@ -12,6 +12,27 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/carspecs', async (req, res) => {
+    try {
+        const carPath = req.query.path;
+        if (!carPath) {
+            return res.status(400).send('Car path is required');
+        }
+        const carUrl = `https://www.auto-data.net/en/${carPath}`;
+        const response = await axios.get(carUrl);
+        const $ = cheerio.load(response.data);
+        
+        // Extract the car specifications table
+        const specificationHtml = $('#outer > table').html();
+        const carTitle = $('h2.car').first().text();
+
+        res.render('carspecs', { specificationHtml, carTitle });
+    } catch (error) {
+        console.error('Error fetching car specs:', error);
+        res.status(500).send('Error fetching car specifications');
+    }
+});
+
 app.get('/search', async (req, res) => {
     try {
         const carModel = req.query.q;
