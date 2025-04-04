@@ -22,11 +22,13 @@ app.get('/carspecs', async (req, res) => {
         const response = await axios.get(carUrl);
         const $ = cheerio.load(response.data);
         
-        // Extract the car specifications table
+        // Extract the car specifications table and hero image
         const specificationHtml = $('#outer > table').html();
         const carTitle = $('h2.car').first().text();
+        const heroImage = $('#outer > div.float336.left.top > img').attr('src');
+        const fullHeroImage = heroImage ? (heroImage.startsWith('http') ? heroImage : `https://www.auto-data.net${heroImage}`) : null;
 
-        res.render('carspecs', { specificationHtml, carTitle });
+        res.render('carspecs', { specificationHtml, carTitle, heroImage: fullHeroImage });
     } catch (error) {
         console.error('Error fetching car specs:', error);
         res.status(500).send('Error fetching car specifications');

@@ -169,7 +169,7 @@
                     <% if (car.additional) { %>
                         <div class="car-additional"><%= car.additional %></div>
                     <% } %>
-                    <a href="/carspecs<%= car.link %>" class="view-specs">View Specifications</a>
+                    <a href="/carspecs?path=<%= car.link.substring(1).replace('en/', '') %>" class="view-specs">View Specifications</a>
                 </div>
             </div>
         <% }); %>
