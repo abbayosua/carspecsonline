@@ -124,6 +124,30 @@
             bottom: 20%;
             right: 20%;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+        .pagination-button {
+            padding: 0.5rem 1rem;
+            background: var(--accent-gradient);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+        .pagination-button:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+        .pagination-button.current {
+            opacity: 0.7;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -149,6 +173,23 @@
                 </div>
             </div>
         <% }); %>
+    </div>
+
+    <div class="pagination">
+        <% if (hasPrevPage) { %>
+            <a href="/search?q=<%= searchQuery %>&page=<%= currentPage - 1 %>" class="pagination-button">← Previous</a>
+        <% } %>
+        <% for(let i = 1; i <= lastPage; i++) { %>
+            <% if(i === currentPage) { %>
+                <span class="pagination-button current"><%= i %></span>
+            <% } else { %>
+                <a href="/search?q=<%= searchQuery %>&page=<%= i %>" class="pagination-button"><%= i %></a>
+            <% } %>
+        <% } %>
+        <% if (hasNextPage) { %>
+            <a href="/search?q=<%= searchQuery %>&page=<%= currentPage + 1 %>" class="pagination-button">Next →</a>
+            <a href="/search?q=<%= searchQuery %>&page=<%= lastPage %>" class="pagination-button">Last »</a>
+        <% } %>
     </div>
 </body>
 </html>

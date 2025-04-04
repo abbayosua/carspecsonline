@@ -15,11 +15,12 @@ app.get('/', (req, res) => {
 app.get('/search', async (req, res) => {
     try {
         const carModel = req.query.q;
+        const page = parseInt(req.query.page) || 1;
         if (!carModel) {
             return res.render('index', { error: 'Please enter a car model' });
         }
 
-        const searchUrl = `https://www.auto-data.net/en/results?search=${encodeURIComponent(carModel)}`;
+        const searchUrl = `https://www.auto-data.net/en/results?search=${encodeURIComponent(carModel)}&page=${page}`;
         console.log('Searching URL:', searchUrl);
 
         const response = await axios.get(searchUrl);
@@ -53,8 +54,26 @@ app.get('/search', async (req, res) => {
             }
         });
 
+        // Extract pagination information
+        const pagination = $('#outer > div.pagination');
+        const paginationLinks = pagination.find('a.pagination');
+        const lastPageLink = paginationLinks.filter((i, el) => !$(el).text().includes('>')).last();
+        const lastPage = lastPageLink.length ? parseInt(lastPageLink.text()) : page;
+        const nextPageLink = pagination.find('a.pagination').filter((i, el) => $(el).text() === '>');
+        const hasNextPage = page < lastPage;
+        const hasPrevPage = page > 1;
+
         console.log('Total cars found:', cars.length);
-        res.render('results', { cars, searchQuery: carModel });
+        console.log('Pagination:', { hasNextPage, hasPrevPage, currentPage: page });
+
+        res.render('results', { 
+            cars, 
+            searchQuery: carModel,
+            currentPage: page,
+            hasNextPage,
+            hasPrevPage,
+            lastPage
+        });
     } catch (error) {
         console.error('Error details:', error.message);
         if (error.response) {
