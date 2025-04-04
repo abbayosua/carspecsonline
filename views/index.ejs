@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarSpecs Online - Find Car Technical Specifications</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+            --accent-gradient: linear-gradient(45deg, #646cff, #9089fc);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .search-form {
+            display: flex;
+            gap: 1rem;
+        }
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.5);
+        }
+        .search-button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            background: var(--accent-gradient);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .search-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .blur-circle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+        }
+        .blur-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(100, 108, 255, 0.15);
+            top: 20%;
+            left: 20%;
+        }
+        .blur-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(144, 137, 252, 0.15);
+            bottom: 20%;
+            right: 20%;
+        }
+    </style>
+</head>
+<body>
+    <div class="blur-circle blur-1"></div>
+    <div class="blur-circle blur-2"></div>
+    <div class="container">
+        <div class="search-container">
+            <h1>CarSpecs Online</h1>
+            <form action="/search" method="GET" class="search-form">
+                <input type="text" name="q" class="search-input" placeholder="Enter car model (e.g., BMW M3)" required>
+                <button type="submit" class="search-button">Search</button>
+            </form>
+            <% if (typeof error !== 'undefined') { %>
+                <p class="error-message"><%= error %></p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
